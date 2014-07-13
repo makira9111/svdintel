@@ -84,6 +84,8 @@ extern void print_matrix( char* desc, int m, int n, float* a, int lda );
 
 int rand();
 
+/*random number generator*/
+
 int rand_seed=10;
 int rand()
 {
@@ -91,23 +93,9 @@ int rand()
     return (unsigned int)(rand_seed / 65536) % 32768;
 }
 
-/*random matrix routine */
-int used[10000];
-int count=0;
-int width, height;
-
-int check_used(int x)
-{
-    int i;
-    for(i =0; i<count;i++)
-        if(used[i] == x)
-            return 1;
-    
-    return 0;
-}
-
 /* Main program */
 int main() {
+    
     /* Locals */
     int M;
     int N;
@@ -121,8 +109,7 @@ int main() {
     printf("total element is %d \n" , tot) ;
     
     float* arr = malloc(M * N * sizeof(int));
-    
-    float r;
+
     int i,j,k;
     float mat[M][N];
     
