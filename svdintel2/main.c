@@ -91,13 +91,6 @@ int rand()
     return (unsigned int)(rand_seed / 65536) % 32768;
 }
 
-/* Parameters */
-//#define M 10
-//#define N 06
-//#define LDA M
-//#define LDU M
-//#define LDVT N
-
 /*random matrix routine */
 int used[10000];
 int count=0;
@@ -134,27 +127,6 @@ int main() {
     float mat[M][N];
     
     
-    // srand (time(0));
-    
-    /*    for(i = 0; i < M; i++)
-     {
-     for(j = 0; j < N; j++)
-     mat[M][N] = rand() % 31 + 10;
-     }
-     */
-    /*for (i=0;i<M;i++)
-     for(j=0;j<N;j++)
-     // while(1)
-     {
-     r=rand();
-     //if(!check_used(r))
-     // {
-     mat[i][j] =r;
-     //= used[count++] =r;
-     break;
-     //}
-     }*/
-    
     for (i=0;i<M;i++)
     {
         for(j=0;j<N;j++)
@@ -184,22 +156,11 @@ int main() {
     int m = M, n = N, lda = LDA, ldu = LDU, ldvt = LDVT, info, lwork;
     float wkopt;
     float* work;
+    
+    
     /* Local arrays */
     float s[N], u[LDU*M], vt[LDVT*N];
-    // float a[M][N] = mat[M][N];
-    
-    /*  for (int a=1; a<=M; a++) {
-     arr[a]=mat[a][N];
-     if (a == M) {
-     for (int b=1; b<=N; b++) {
-     arr[M+b]=mat[M][b];
-     if (b==N && a==M) {
-     break;
-     }
-     }
-     }
-     }*/
-    
+
     for(i=0;i<M;i++)
     {
         for(j=0;j<N;j++)
@@ -212,17 +173,7 @@ int main() {
         
         printf("%0.4f \n",arr[k]);
     
-    //arr [1] = mat[M][N];
     free(arr);
-    
-    //   memset( a, 0, M*N*sizeof(int) );
-    /*{
-     8.79f,  6.11f, -9.15f,  9.57f, -3.49f,  9.84f,
-     9.93f,  6.91f, -7.93f,  1.64f,  4.02f,  0.15f,
-     9.83f,  5.04f,  4.86f,  8.83f,  9.80f, -8.99f,
-     5.45f, -0.27f,  4.85f,  0.74f, 10.00f, -6.02f,
-     3.16f,  7.98f,  3.01f,  5.80f,  4.27f, -5.31f
-     };*/
     
     
     /* Executable statements */
