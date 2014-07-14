@@ -4,20 +4,21 @@
 #include </System/Library/Frameworks/Accelerate.framework/Headers/Accelerate.h>
 
 /* SGESVD prototype */
-extern void sgesvd( char* jobu, char* jobvt, int* m, int* n, double* a,
+extern void sgesvd( char* jobu, char* jobvt, int* m, int* n, float* a,
                    int* lda, float* s, float* u, int* ldu, float* vt, int* ldvt,
                    float* work, int* lwork, int* info );
 /* Auxiliary routines prototypes */
-extern void print_matrix( char* desc, int m, int n, double* a, int lda );
-
+extern void print_matrix( char* desc, int m, int n, float* a, int lda );
 int rand();
 
 /*random number generator*/
 
 int rand_seed=10;
-int rand()
+int rand1()
 {
-    rand_seed = rand_seed * 1103515245 +12345;
+    srand((int)time(0));
+    
+    rand_seed = rand_seed * 1103515245 +12345*rand();
     return (unsigned int)(rand_seed / 65536) % 32768;
 }
 
@@ -45,7 +46,7 @@ int main() {
     {
         for(j=0;j<N;j++)
         {
-            mat[i][j]=rand()%10;
+            mat[i][j]=rand1()%10 +1;
         }
     }
     
@@ -87,12 +88,13 @@ int main() {
     }
     
     
+    free(arr);
     
     printf("\nconvert into 1d-matrix:\n");
     
     for(k=0;k<(tot);k++)
         
-        printf("%0.4f \n",arr[k]);
+        printf("%0.4f ",arr[k]);
   
     
    // free(arr);
@@ -127,7 +129,7 @@ int main() {
 } /* End of SGESVD Example */
 
 /* Auxiliary routine: printing a matrix */
-void print_matrix( char* desc, int m, int n, double* a, int lda ) {
+void print_matrix( char* desc, int m, int n, float* a, int lda ) {
     int i, j;
     printf( "\n %s\n", desc );
     for( i = 0; i < m; i++ ) {
