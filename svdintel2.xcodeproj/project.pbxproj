@@ -8,18 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		E92C42001972DFA500A2F607 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = E92C41FF1972DFA500A2F607 /* main.c */; };
-		E92C42021972DFA500A2F607 /* svdintel2.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = E92C42011972DFA500A2F607 /* svdintel2.1 */; };
+		E92C42021972DFA500A2F607 /* svdintel2.1 in Copy Files */ = {isa = PBXBuildFile; fileRef = E92C42011972DFA500A2F607 /* svdintel2.1 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		E92C41FA1972DFA500A2F607 /* CopyFiles */ = {
+		E92C41FA1972DFA500A2F607 /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				E92C42021972DFA500A2F607 /* svdintel2.1 in CopyFiles */,
+				E92C42021972DFA500A2F607 /* svdintel2.1 in Copy Files */,
 			);
+			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -75,7 +76,7 @@
 			buildPhases = (
 				E92C41F81972DFA500A2F607 /* Sources */,
 				E92C41F91972DFA500A2F607 /* Frameworks */,
-				E92C41FA1972DFA500A2F607 /* CopyFiles */,
+				E92C41FA1972DFA500A2F607 /* Copy Files */,
 			);
 			buildRules = (
 			);
@@ -227,6 +228,7 @@
 				E92C42071972DFA500A2F607 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

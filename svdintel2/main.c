@@ -3,6 +3,7 @@
 #include "time.h"
 #include </System/Library/Frameworks/Accelerate.framework/Headers/Accelerate.h>
 
+#define LEN 10000000
 /* SGESVD prototype */
 extern void sgesvd( char* jobu, char* jobvt, int* m, int* n, float* a,
                    int* lda, float* s, float* u, int* ldu, float* vt, int* ldvt,
@@ -37,7 +38,8 @@ int main() {
     tot=M*N;
     printf("total element is %d \n" , tot) ;
     
-    double* arr = malloc(M * N * sizeof(double));
+    double* arr = malloc(LEN);
+    //double* mat = malloc(M*N* (sizeof(double))*LEN);
 
     int i,j,k;
     double mat[M][N];
@@ -86,12 +88,11 @@ int main() {
             arr[N * i + j] = mat[i][j];
         }
     }
-    
-    
-    free(arr);
+    sleep(3);
     
     printf("\nconvert into 1d-matrix:\n");
     
+    sleep(3);
     for(k=0;k<(tot);k++)
         
         printf("%0.4f ",arr[k]);
@@ -99,6 +100,7 @@ int main() {
     
    // free(arr);
     
+    sleep(3);
     
     /* Executable statements */
     printf( "\nSGESVD Example Program Results\n" );
