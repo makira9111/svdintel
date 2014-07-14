@@ -12,6 +12,10 @@ extern void sgesvd( char* jobu, char* jobvt, int* m, int* n, float* a,
 extern void print_matrix( char* desc, int m, int n, float* a, int lda );
 int rand();
 
+/*array allocation*/
+extern double **alloc_array(int rows, int columns);
+
+
 /*random number generator*/
 
 int rand_seed=10;
@@ -38,11 +42,12 @@ int main() {
     tot=M*N;
     printf("total element is %d \n" , tot) ;
     
-    double* arr = malloc(LEN);
-    //double* mat = malloc(M*N* (sizeof(double))*LEN);
+    double* arr = malloc(M*N*LEN);
+
 
     int i,j,k;
-    double mat[M][N];
+    
+    double **mat = alloc_array(M, N);
     
     for (i=0;i<M;i++)
     {
@@ -51,7 +56,9 @@ int main() {
             mat[i][j]=rand1()%10 +1;
         }
     }
-    
+ 
+
+/*
     printf("\nprinting 2-D matrix: \n");
     
     for (int row=0; row<M; row++)
@@ -60,7 +67,7 @@ int main() {
             printf("%0.4f  ", mat[row][columns]);
         printf("\n");
     }
-
+*/
     int LDA = M;
     int LDU = M;
     int LDVT = N;
@@ -72,15 +79,8 @@ int main() {
     
     /* Local arrays */
     float s[N], u[LDU*M], vt[LDVT*N];
+
 /*
-    for(i=0;i<M;i++)
-    {
-        for(j=0;j<N;j++)
-            arr[k++]=mat[i][j];
-    }
-  */
-   // double array[M * N];
-    
     for (i=0;i<M;i++)
     {
         for(j=0;j<N;j++)
@@ -88,19 +88,19 @@ int main() {
             arr[N * i + j] = mat[i][j];
         }
     }
-    sleep(3);
+
+*/
+    for (int i = 0; i < M; i++)
+        free(mat[i]);
+    free(mat);
     
-    printf("\nconvert into 1d-matrix:\n");
+/*    printf("\nconvert into 1d-matrix:\n");
     
-    sleep(3);
     for(k=0;k<(tot);k++)
         
         printf("%0.4f ",arr[k]);
-  
+  */
     
-   // free(arr);
-    
-    sleep(3);
     
     /* Executable statements */
     printf( "\nSGESVD Example Program Results\n" );
@@ -125,7 +125,7 @@ int main() {
     /* Print right singular vectors */
     print_matrix( "Right singular vectors (stored rowwise)", n, n, vt, ldvt );
     /* Free workspace */
-    
+    free(arr);
     free( (void*)work );
     exit( 0 );
 } /* End of SGESVD Example */
@@ -140,4 +140,31 @@ void print_matrix( char* desc, int m, int n, float* a, int lda ) {
     }
 }
 
+/*array allocation function*/
 
+double **alloc_array(int rows, int columns)
+{
+    int i;
+    int j;
+    int **twoDary = (int**) (malloc(rows * sizeof(int *)));
+    int **twoDaryStart = twoDary;
+    int *currentrow;
+    
+    for ( i = 0; i < rows; i++ ){
+        *(twoDary + i) =  (malloc(columns * sizeof(int)));
+    }
+    
+    for (j = 0; j < rows; j++) {
+        currentrow = *(twoDary + j);
+        for ( i = 0; i < columns; i++ ) {
+            *(currentrow + i) = i;
+           // printf("%d ", *(currentrow+i));
+    }
+    }
+    
+            
+
+    
+    
+    return twoDary;
+}
