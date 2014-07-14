@@ -58,7 +58,7 @@ int main() {
     }
  
 
-/*
+
     printf("\nprinting 2-D matrix: \n");
     
     for (int row=0; row<M; row++)
@@ -67,7 +67,7 @@ int main() {
             printf("%0.4f  ", mat[row][columns]);
         printf("\n");
     }
-*/
+
     int LDA = M;
     int LDU = M;
     int LDVT = N;
@@ -80,7 +80,7 @@ int main() {
     /* Local arrays */
     float s[N], u[LDU*M], vt[LDVT*N];
 
-/*
+
     for (i=0;i<M;i++)
     {
         for(j=0;j<N;j++)
@@ -89,7 +89,7 @@ int main() {
         }
     }
 
-*/
+
     for (int i = 0; i < M; i++)
         free(mat[i]);
     free(mat);
