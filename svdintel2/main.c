@@ -4,11 +4,11 @@
 #include </System/Library/Frameworks/Accelerate.framework/Headers/Accelerate.h>
 
 /* SGESVD prototype */
-extern void sgesvd( char* jobu, char* jobvt, int* m, int* n, float* a,
+extern void sgesvd( char* jobu, char* jobvt, int* m, int* n, double* a,
                    int* lda, float* s, float* u, int* ldu, float* vt, int* ldvt,
                    float* work, int* lwork, int* info );
 /* Auxiliary routines prototypes */
-extern void print_matrix( char* desc, int m, int n, float* a, int lda );
+extern void print_matrix( char* desc, int m, int n, double* a, int lda );
 
 int rand();
 
@@ -36,20 +36,18 @@ int main() {
     tot=M*N;
     printf("total element is %d \n" , tot) ;
     
-    float* arr = malloc(M * N * sizeof(int));
+    double* arr = malloc(M * N * sizeof(double));
 
     int i,j,k;
-    float mat[M][N];
-    
+    double mat[M][N];
     
     for (i=0;i<M;i++)
     {
         for(j=0;j<N;j++)
         {
-            mat[i][j]=rand()%100;
+            mat[i][j]=rand()%10;
         }
     }
-    
     
     printf("\nprinting 2-D matrix: \n");
     
@@ -71,12 +69,23 @@ int main() {
     
     /* Local arrays */
     float s[N], u[LDU*M], vt[LDVT*N];
-
+/*
     for(i=0;i<M;i++)
     {
         for(j=0;j<N;j++)
             arr[k++]=mat[i][j];
     }
+  */
+   // double array[M * N];
+    
+    for (i=0;i<M;i++)
+    {
+        for(j=0;j<N;j++)
+        {
+            arr[N * i + j] = mat[i][j];
+        }
+    }
+    
     
     
     printf("\nconvert into 1d-matrix:\n");
@@ -84,8 +93,9 @@ int main() {
     for(k=0;k<(tot);k++)
         
         printf("%0.4f \n",arr[k]);
+  
     
-    free(arr);
+   // free(arr);
     
     
     /* Executable statements */
@@ -117,7 +127,7 @@ int main() {
 } /* End of SGESVD Example */
 
 /* Auxiliary routine: printing a matrix */
-void print_matrix( char* desc, int m, int n, float* a, int lda ) {
+void print_matrix( char* desc, int m, int n, double* a, int lda ) {
     int i, j;
     printf( "\n %s\n", desc );
     for( i = 0; i < m; i++ ) {
