@@ -5,7 +5,7 @@
 
 #define LEN 10000000
 /* SGESVD prototype */
-extern void sgesvd( char* jobu, char* jobvt, int* m, int* n, float* a,
+extern void sgesvd( char* jobu, char* jobvt, int* m, int* n, double* a,
                    int* lda, float* s, float* u, int* ldu, float* vt, int* ldvt,
                    float* work, int* lwork, int* info );
 /* Auxiliary routines prototypes */
@@ -146,9 +146,9 @@ double **alloc_array(int rows, int columns)
 {
     int i;
     int j;
-    int **twoDary = (int**) (malloc(rows * sizeof(int *)));
-    int **twoDaryStart = twoDary;
-    int *currentrow;
+    double **twoDary = (double**) (malloc(rows * sizeof(int *)));
+   // int **twoDaryStart = twoDary;
+    double *currentrow;
     
     for ( i = 0; i < rows; i++ ){
         *(twoDary + i) =  (malloc(columns * sizeof(int)));
