@@ -5,15 +5,21 @@
 
 #define LEN 10000000
 /* SGESVD prototype */
-extern void sgesvd( char* jobu, char* jobvt, int* m, int* n, double* a,
+extern void sgesvd( char* jobu, char* jobvt, int* m, int* n, float* a,
                    int* lda, float* s, float* u, int* ldu, float* vt, int* ldvt,
                    float* work, int* lwork, int* info );
 /* Auxiliary routines prototypes */
 extern void print_matrix( char* desc, int m, int n, float* a, int lda );
-int rand();
+
+//int rand();
 
 /*array allocation*/
 extern double **alloc_array(int rows, int columns);
+
+double* allocate_mem(double*** arr, int n, int m);
+
+//free memory
+void deallocate_mem(int*** arr, int* arr_data);
 
 
 /*random number generator*/
@@ -42,12 +48,17 @@ int main() {
     tot=M*N;
     printf("total element is %d \n" , tot) ;
     
-    double* arr = malloc(M*N*LEN);
-
-
-    int i,j,k;
+    //double* arr = malloc(M*N*LEN);
+    float arr[M*N];
+    double* allocate_mem(double*** arr, int N, int M);
     
-    double **mat = alloc_array(M, N);
+
+    int i,j;
+    
+    //double **mat = alloc_array(M, N);
+    double mat[M][N];
+    
+    double* allocate_mem(double*** mat, int N, int M);
     
     for (i=0;i<M;i++)
     {
@@ -57,7 +68,6 @@ int main() {
         }
     }
  
-
 
     printf("\nprinting 2-D matrix: \n");
     
@@ -80,19 +90,11 @@ int main() {
     /* Local arrays */
     float s[N], u[LDU*M], vt[LDVT*N];
 
-
-    for (i=0;i<M;i++)
-    {
-        for(j=0;j<N;j++)
-        {
-            arr[N * i + j] = mat[i][j];
-        }
+    for (i = 0; i < M*N; i++) {
+        //arr[i] = mat[i/(N)][i%N]; // <<-- row-major order
+        arr[i] = mat[i%M][i/M]; // <<-- column-major order
     }
 
-
-    for (int i = 0; i < M; i++)
-        free(mat[i]);
-    free(mat);
     
 /*    printf("\nconvert into 1d-matrix:\n");
     
@@ -125,7 +127,7 @@ int main() {
     /* Print right singular vectors */
     print_matrix( "Right singular vectors (stored rowwise)", n, n, vt, ldvt );
     /* Free workspace */
-    free(arr);
+    void deallocate_mem(int*** arr, int* arr_data);
     free( (void*)work );
     exit( 0 );
 } /* End of SGESVD Example */
@@ -162,9 +164,21 @@ double **alloc_array(int rows, int columns)
     }
     }
     
-            
-
-    
-    
     return twoDary;
+}
+//memory allocation function
+
+double* allocate_mem(double*** arr, int n, int m)
+{
+    *arr = (double**)malloc(n * sizeof(int*));
+    double *arr_data = malloc( n * m * sizeof(int));
+    for(int i=0; i<n; i++)
+        (*arr)[i] = arr_data + i * m ;
+    return arr_data; //free point
+}
+
+//free memory
+void deallocate_mem(int*** arr, int* arr_data){
+    free(arr_data);
+    free(*arr);
 }
