@@ -49,32 +49,98 @@ int main() {
     printf("total element is %d \n" , tot) ;
     
     //double* arr = malloc(M*N*LEN);
-    float arr[M*N];
-    double* allocate_mem(double*** arr, int N, int M);
+    float *arr;
+    arr = (float *)malloc(sizeof(double)*tot+1);
+    //allocate_mem( arr, 10, 10);
     
-
     int i,j;
     
     //double **mat = alloc_array(M, N);
-    double mat[M][N];
+   /* double mat[M][N];
     
-    double* allocate_mem(double*** mat, int N, int M);
+    allocate_mem(mat,  1000,  1000);
+    */
+    /*
+    double **mat;
+	mat = malloc(M * sizeof(int *));
+	if(mat == NULL)
+    {
+		fprintf(stderr, "out of memory\n");
+		exit;
+    }
+	for(i = 0; i < M; i++)
+    {
+		mat[i] = malloc(N * sizeof(int));
+		if(mat[i] == NULL)
+        {
+			fprintf(stderr, "out of memory\n");
+			exit;
+        }
+    }
+    */
     
-    for (i=0;i<M;i++)
+    
+    // (2) N mallocs, one for each row, plus one malloc for array of row
+    //     arrays.  The bucket locations in individual rows are contiguous,
+    //     but rows are not necessarily contiguous in heap space.
+    //
+    float **mat; // an array of int arrays (a pointer to pointers to ints)
+    
+    // declaration and allocation:
+    
+    // allocate an array of N pointers to ints
+    // malloc returns the address of this array (a pointer to (int *)'s)
+   mat = (float **)malloc(sizeof(int *)*N*M+1);
+    
+    // for each row, malloc space for its buckets and add it to
+    // the array of arrays
+    for(i=0; i < N; i++) {
+        mat[i] = (float *)malloc(sizeof(int)*M*N+1);
+    }
+    
+    // in memory:
+    // 2d_array -----> | *-|-------> [ 0, 0, 0, ... , 0]  row 0
+    //                 | *-|-------> [ 0, 0, 0, ... , 0]  row 1
+    //                 |...|                               ...
+    //                 | *-|-------> [ 0, 0, 0, ... , 0]
+    
+    // access using [] notation:
+    //  2d_array[i] is ith bucket in 2d_array, which is the address of
+    // a 1d array, on which you can use indexing to access its bucket value
+    for(i=0; i < N; i++) {
+        for(j=0; j < M; j++) {
+            mat[i][j] = rand1()%10;
+        }
+    }
+    
+    /*// access using pointer arithmetic (NOT all N*M buckets are contigous)
+    // but each row's buckets are
+    int *ptr;
+    for(i=0; i < N; i++) {
+        *ptr = mat[i];  // set pointer to address of bucket 0 in row i
+        for(j=0; j < M; j++) { 
+            *ptr = 0; 
+            ptr++;
+        }
+    }
+    */
+    
+  /* for (i=0;i<M;i++)
     {
         for(j=0;j<N;j++)
         {
-            mat[i][j]=rand1()%10 +1;
+            int a = rand1()%10+1;
+            mat[i][j]=a;
         }
     }
- 
+ */
 
-    printf("\nprinting 2-D matrix: \n");
+    printf("printing 2-D matrix: \n");
     
     for (int row=0; row<M; row++)
     {
         for(int columns=0; columns<N; columns++)
-            printf("%0.4f  ", mat[row][columns]);
+            printf("%0.2f  ", mat[row][columns]);
         printf("\n");
     }
 
@@ -91,17 +157,32 @@ int main() {
     float s[N], u[LDU*M], vt[LDVT*N];
 
     for (i = 0; i < M*N; i++) {
-        //arr[i] = mat[i/(N)][i%N]; // <<-- row-major order
-        arr[i] = mat[i%M][i/M]; // <<-- column-major order
+        arr[i] = mat[i/(N)][i%N]; // <<-- row-major order
+        //arr[i] = mat[i%M][i/M]; // <<-- column-major order
     }
 
+   // mat = (float **)malloc(sizeof(int *)*N);
     
-/*    printf("\nconvert into 1d-matrix:\n");
+    // for each row, malloc space for its buckets and add it to
+    // the array of arrays
+    for(i=M; i < 1; i--) {
+      free ((void*)mat[i]);
+    }
+    //free(mat);
     
-    for(k=0;k<(tot);k++)
-        
-        printf("%0.4f ",arr[k]);
-  */
+    //memset(mat, 0, sizeof(int));
+    //free(mat);
+    
+    printf("\nconvert into 1d-matrix:\n");
+    
+    for(int k=0;k<(tot);k++)
+    {
+        printf("%0.2f ",arr[k]);
+        //free(mat);
+    }
+    //free(mat);
+ 
+    
     
     
     /* Executable statements */
